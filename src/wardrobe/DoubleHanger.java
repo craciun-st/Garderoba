@@ -17,6 +17,10 @@ public class DoubleHanger extends Hanger {
     private Clothes top;
     private Clothes bottom;
 
+    public DoubleHanger() {
+
+    }
+
     @Override
     public Clothes takeOffOne(int id) {
         Clothes temp;

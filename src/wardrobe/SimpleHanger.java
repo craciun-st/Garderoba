@@ -17,6 +17,10 @@ public class SimpleHanger extends Hanger {
     
     private Clothes top;
 
+    public SimpleHanger() {
+
+    }
+
     @Override
     public Clothes takeOffOne(int id) {
         if (isClothesOnHanger(id)){
