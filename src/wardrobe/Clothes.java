@@ -31,6 +31,14 @@ public class Clothes {
 
     public ClothesType getType() {
         return type;
-    }    
-    
+    }
+
+    @Override
+    public String toString() {
+        return "Clothing{" +
+                "id = " + id +
+                ", brand = " + brand +
+                ", type = " + type +
+                '}';
+    }
 }
