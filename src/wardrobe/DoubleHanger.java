@@ -6,7 +6,9 @@
 package wardrobe;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -27,15 +29,28 @@ public class DoubleHanger extends Hanger {
         if (isClothesOnTopPart(id)) {
             temp = top;
             top = null;
+            System.out.printf(
+                    "Taken out clothing with id=%d of brand %s from top part of double hanger \n",
+                    id,
+                    temp.getBrand()
+            );
             return temp;
         }
         else {
             if (isClothesOnBottomPart(id)) {
                 temp = bottom;
                 bottom = null;
+                System.out.printf(
+                        "Taken out clothing with id=%d of brand %s from bottom part of hanger \n",
+                        id,
+                        temp.getBrand()
+                );
                 return temp;
             }
-            else { return null; }
+            else {
+                System.out.printf("No clothing with id=%d found on double hanger! \n", id);
+                return null;
+            }
         }
     }
 
@@ -48,8 +63,17 @@ public class DoubleHanger extends Hanger {
         if (bottom != null) {
             clothesOnHanger.add(takeOffOne(bottom.getId()));
         }
-        if (clothesOnHanger.size() > 0) { return clothesOnHanger; }
-        else { return null; }
+        if (clothesOnHanger.size() > 0) {
+            String joinedListDescriptor = clothesOnHanger.stream()
+                    .map(Clothes::toString)
+                    .collect(Collectors.joining(";\n"));
+            System.out.println("Retrieved the following list of clothes from double hanger: \n"+joinedListDescriptor);
+            return clothesOnHanger;
+        }
+        else {
+            System.out.println("No clothing found on double hanger!");
+            return null;
+        }
     }
 
     @Override
@@ -57,13 +81,27 @@ public class DoubleHanger extends Hanger {
         if (top == null || bottom == null) {
             if (top == null && clothes.getType().isUpperClothes()) {
                 top = clothes;
+                System.out.printf(
+                        "Put clothing with id=%d of brand %s on top part of double hanger \n",
+                        clothes.getId(),
+                        clothes.getBrand()
+                );
                 return true;
             }
             if (bottom == null && !(clothes.getType().isUpperClothes())) {
                 bottom = clothes;
+                System.out.printf(
+                        "Put clothing with id=%d of brand %s on bottom part of double hanger \n",
+                        clothes.getId(),
+                        clothes.getBrand()
+                );
                 return true;
             }
         }
+        System.out.printf("Could not put clothing with id=%d of brand %s on double hanger \n",
+                clothes.getId(),
+                clothes.getBrand()
+        );
         return false;
     }
 

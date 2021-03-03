@@ -5,10 +5,9 @@
  */
 package wardrobe;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  *
@@ -41,8 +40,10 @@ public class Wardrobe {
     public boolean put(Hanger hanger) {
         if (!isWardrobeFull()) {
             hangers.add(hanger);
+            System.out.printf("Successfully put hanger %s in wardrobe %s \n", hanger.toString(), this.toString());
             return true;
         }
+        System.out.printf("Could not put hanger %s in wardrobe %s! \n", hanger.toString(), this.toString());
         return false;
     }
 
@@ -50,8 +51,18 @@ public class Wardrobe {
         Hanger hangerWithClothes = hangers.stream()
                 .filter(hanger -> hanger.isClothesOnHanger(clothesId))
                 .findFirst().orElse(null);
-        if (hangerWithClothes == null) { return null; }
-        else { return hangerWithClothes.takeOffOne(clothesId); }
+        if (hangerWithClothes == null) {
+            System.out.printf("Could not find clothing with id=%d in wardrobe %s! \n", clothesId, this.toString());
+            return null;
+        }
+        else {
+            Clothes removedClothes = hangerWithClothes.takeOffOne(clothesId);
+            System.out.printf("Successfuly removed clothing with id=%d of type %s from wardrobe %s \n",
+                    clothesId,
+                    removedClothes.getType().toString(),
+                    this.toString());
+            return  removedClothes;
+        }
     }
 
     public boolean hasRoomFor(ClothesType type) {
@@ -77,6 +88,62 @@ public class Wardrobe {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        Random randomizer = new Random();
+        String[] clothesBrands = new String[]{"Avanti", "Hot Topic", "Zara", "H&M", "Marks&Spencer", "Urban Paces"};
+        ClothesType[] orderedClothesType = new ClothesType[]{
+                ClothesType.TROUSERS,
+                ClothesType.SKIRT,
+                ClothesType.SKIRT,
+                ClothesType.BLOUSE,
+                ClothesType.BLOUSE,
+                ClothesType.SHIRT,
+                ClothesType.SHIRT
+        };
+
+        Wardrobe bigWardrobe = new Wardrobe(10);
+        System.out.println("Big wardrobe: "+ bigWardrobe.toString());
+        Wardrobe smallWardrobe = new Wardrobe(3);
+        System.out.println("Small wardrobe: "+ smallWardrobe.toString()+"\n");
+
+        Clothes currentClothing;
+        Hanger currentHanger;
+
+        int indexForBrands;
+
+        for (ClothesType type : orderedClothesType) {
+            indexForBrands = randomizer.nextInt(clothesBrands.length);
+            currentClothing = new Clothes(clothesBrands[indexForBrands], type);
+            if (randomizer.nextInt() % 2 == 0) {
+                currentHanger = new SimpleHanger();
+                if (currentHanger.put(currentClothing) == false) {
+                    currentHanger = new DoubleHanger();
+                    currentHanger.put(currentClothing);
+                }
+            } else {
+                currentHanger = new DoubleHanger();
+                currentHanger.put(currentClothing);
+            }
+            if (smallWardrobe.put(currentHanger) == false) {
+                bigWardrobe.put(currentHanger);
+            }
+        }
+
+        indexForBrands = randomizer.nextInt(clothesBrands.length);
+        List<Clothes> clothesInSmallWardrobe = smallWardrobe.getHangers().stream()
+                .map(Hanger::takeOffAll)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
+        Clothes newTrousers = new Clothes(clothesBrands[indexForBrands], ClothesType.TROUSERS);
+
+        System.out.println("Can find room in small wardrobe for trousers: "
+                +smallWardrobe.hasRoomFor(ClothesType.TROUSERS));
+        if (smallWardrobe.hasRoomFor(ClothesType.TROUSERS)) {
+            Hanger hangerWithRoom = smallWardrobe.getHangers().stream()
+                    .filter(hanger -> hanger.isRoomFor(ClothesType.TROUSERS))
+                    .findFirst().orElse(null);
+            assert hangerWithRoom != null;
+            hangerWithRoom.put(newTrousers);
+        }
+
     }
 }
