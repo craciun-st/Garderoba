@@ -38,12 +38,16 @@ public class SimpleHanger extends Hanger {
 
     @Override
     public boolean put(Clothes clothes) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (isRoomFor(clothes.getType())) {
+            top = clothes;
+            return true;
+        }
+        else { return false; }
     }
 
     @Override
     public boolean isRoomFor(ClothesType type) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return (top == null && type.isUpperClothes());
     }
     
     
