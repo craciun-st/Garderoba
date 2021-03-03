@@ -7,7 +7,7 @@ package wardrobe;
 
 /**
  *
- * @author Utilizator
+ * @author Adamaltar
  */
 public class Clothes {
     private static int counter=0;
@@ -16,7 +16,7 @@ public class Clothes {
     private final ClothesType type;
 
     public Clothes(String brand, ClothesType type) {
-        this.id=++counter;
+        this.id = ++counter;    // increments 'counter' before 'id' is assigned
         this.brand = brand;
         this.type = type;
     }

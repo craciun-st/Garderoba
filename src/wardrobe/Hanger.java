@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  *
- * @author Utilizator
+ * @author Adamaltar
  */
 public abstract class Hanger {
     

@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  *
- * @author Utilizator
+ * @author Adamaltar
  */
 public class SimpleHanger extends Hanger {
     

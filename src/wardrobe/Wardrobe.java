@@ -7,7 +7,7 @@ package wardrobe;
 
 /**
  *
- * @author Utilizator
+ * @author Adamaltar
  */
 public class Wardrobe {
 
