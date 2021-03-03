@@ -49,16 +49,14 @@ public class SimpleHanger extends Hanger {
     public boolean isRoomFor(ClothesType type) {
         return (top == null && type.isUpperClothes());
     }
-    
-    
-    private boolean isClothesOnHanger(int id){
+
+    @Override
+    protected boolean isClothesOnHanger(int clothesId) {
         if (top==null)
             return false;
-        
-        return top.getId()==id;
+
+        return top.getId()== clothesId;
     }
-    
-    
-    
-    
+
+
 }

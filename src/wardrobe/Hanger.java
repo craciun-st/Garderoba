@@ -17,7 +17,6 @@ public abstract class Hanger {
     public abstract List<Clothes> takeOffAll();
     public abstract boolean put(Clothes clothes);
     public abstract boolean isRoomFor(ClothesType type);
-    
-            
+    protected abstract boolean isClothesOnHanger(int clothesId);
 }
 
